@@ -1,0 +1,25 @@
+Generally, the syntax is something like this:
+
+<type-identifier> <instance-name> [ is <source>, <source2> ] {
+    flag
+    FIELD [ = ] expression
+}
+
+which fields and flags are available are determined by the type
+
+In a perfect world, there would be a DSL for defining a type, rather than hard-coding the set of known types
+If I can make that work, I will, but I am prepared to define my types in code if I have to
+
+The result of parsing a type definition would be a parser.
+The result of parsing an object definition would be a constructor.
+The result of referencing an object definition would be to call the constructor and operate on the returned object
+
+When you indicate that an object is based off another object,
+then the constructor knows to start with an empty object,
+then call the constructor for the source object using the empty object,
+and repeat for all source objects provided, to build up a base object on which to build
+
+Pretty much anything can be defined anywhere
+If it is defined at the root of a file, is identifier has global scope
+If it is defined inside of another object, then the identifier is only recognized while constructing that object
+A namespace is an object that contains other objects for the sole purpose of defining such a scope

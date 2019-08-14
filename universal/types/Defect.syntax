@@ -1,0 +1,29 @@
+type DefectState is Enum {
+    OPEN    "Issue is still open, it has not been resolved"
+    FIXED   "Issue has been resolved"
+    CLOSED  "Issue was closed without resolving, e.g. will not fix, not a bug, or duplicate"
+}
+
+type Defect is Object {
+    """
+    Defines an identifier that corresponds to a defect in the 
+    tracking system.  Allows linking test cases to the defects
+    that they expose or verify.
+    """
+
+    property name    // object identifier
+    property value   // assigned value, if any
+
+    property id      is alias for name
+    property summary is alias for value
+    property link    URL = defect-tracking-system.link(this.id)
+    
+    property state   DefectState
+
+    // NOTE: Intent is to make it unnecessary to spell out the owner of the enum value
+    // but I may include it anyway, for clarity
+    flag OPEN   sets state to DefectState.OPEN 
+    flag FIXED  sets state to DefectState.FIXED
+    flag CLOSED sets state to DefectState.CLOSED 
+}
+

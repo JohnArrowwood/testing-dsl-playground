@@ -1,0 +1,39 @@
+type Scenario is Object {
+    """
+    A Scenario is a container for a list of Actions.
+    It provides an alternate syntax to an actual list.
+    """
+
+    property preconditions  State
+    property actions       is list of Action
+    property postconditions State
+
+    on unqualified Action append to contents
+}
+
+// Example:
+/*
+
+Scenario happy-path {
+    typical-user-login
+    add-new-request
+    enter-request-details
+    submit
+}
+
+*/
+
+// Is another way of doing the following:
+/*
+
+Scenario happy-path {
+    contents = [
+        typical-user-login,
+        add-new-request,
+        enter-request-details,
+        submit
+    ]
+}
+
+*/
+// Obviously, the first syntax is cleaner

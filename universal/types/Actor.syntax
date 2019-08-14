@@ -1,0 +1,11 @@
+type Actor is Object {
+    """
+    An actor is the individual who interacts with the system as part of a Use Case.
+    """
+
+    property name    // object identifier
+    property value   // expression associated with object
+    property summary is alias for value
+    property role    Role
+
+}

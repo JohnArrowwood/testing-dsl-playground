@@ -1,0 +1,9 @@
+type Feature is Object {
+    """
+    A feature is a collection of functions that a software system offers to its users.
+    It may or may not map directly to a component, depending on how the system is architected.
+    """
+
+    property summary String = this.value
+    property details String
+}

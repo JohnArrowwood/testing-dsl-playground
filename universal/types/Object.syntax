@@ -1,0 +1,11 @@
+// Object is a built-in data type
+// When an instance of an Object is declared,
+// the identifier that the object is given is saved as .name
+// And any expression not prefixed by a keyword is saved as .value
+type Object {
+    property name  String
+    property value Expression
+
+    on create save identifier to name
+    on unqualified Expression save to value
+}

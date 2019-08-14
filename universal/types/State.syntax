@@ -1,0 +1,14 @@
+type State is Object {
+    """
+    An object representing the state of the system.  The state is a collection of well-defined, 
+    verifiable Conditions.
+    """
+
+    property name  // the name of the state
+    property value // the object value - may be a list
+
+    property summary is alias for value
+
+    property conditions is list of Condition
+    on unqualified Condition append to conditions
+}

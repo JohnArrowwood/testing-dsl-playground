@@ -1,0 +1,10 @@
+type Snippet is Object {
+    """
+    A Snippet is a small bit of text meant to be interpreted as code for purposes of stringing together
+    the implementation of a test case.
+    """
+
+    property name // object identity
+    property value // assigned value, if any 
+    property code is alias for value
+}

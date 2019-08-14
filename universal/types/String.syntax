@@ -1,0 +1,5 @@
+type String {
+    // TBD
+    // should this be a built-in, or does it make sense to define it as part of the language?
+    // Eventually, will probably put the parsing instructions here
+}

@@ -1,0 +1,17 @@
+type Condition is Object {
+    """
+    A Condition describes some verifiable condition within the system.
+    It also may define how to put the system in that state, 
+    and how to verify that it is indeed in that state.
+    """
+
+    property name // the name of the condition
+    property value // the object value - the english description of the condition
+
+    property summary is alias for value
+
+    // code that can be used in tests to either put the system in this state
+    // or verify that the system is now in this state
+    property code-to-create Snippet
+    property code-to-verify Snippet
+}

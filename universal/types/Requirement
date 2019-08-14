@@ -1,0 +1,29 @@
+type Requirement is Object {
+    """
+    Defines a high-level behavioral requirement that the system is expected to adhere to.
+    Primarily intended for standards enforcement, though may also be used to capture and
+    track explicit business requirements, if one so chooses.
+    
+    One can do all of their requirements management via objects of this type, if desired.
+    But it is expected that more often, teams will use these as placeholders for objects in their
+    external requirements management tool, if they use them beyond the system-defined requirements.
+
+    The primary reason for defining requirements and linking them to things like tests and
+    services, is to enable automatic test matrix generation.
+    """
+
+    property id      String = this.name
+    property summary String = this.value
+    property link    URL    = requirements-tracking-system.link( id )
+
+    // keywords for defining the requirement 
+    // Each may be set to a string, 
+    // or an object,
+    // or a list of strings and/or objects
+
+    // recommendations on what to set these to will evolve over time
+    property when is Anything
+    property if   is Anything
+    property then is Anything
+    property else is Anything
+}

@@ -1,0 +1,10 @@
+type Role is Object {
+    """
+    A role is a type of Actor.  Typically, it is the job function of an employee.
+    But it can be any sub-category of user or stakeholder.
+    """
+
+    alias summary to value
+    alias description to value
+    property details String
+}

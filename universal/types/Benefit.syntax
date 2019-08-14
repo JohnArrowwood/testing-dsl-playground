@@ -1,0 +1,14 @@
+type Benefit is Object {
+    """
+    Description of the benefit that a user derrives from a feature.
+
+    The system will include some pre-defined generic benefits that
+    other benefits can inherit from, if you like.
+    """
+
+    property name    // object identifier
+    property value   // assigned value 
+    property summary is alias for value
+    property details String
+    
+}

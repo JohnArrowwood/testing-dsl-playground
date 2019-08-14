@@ -1,0 +1,20 @@
+type link-builder is object {
+    """
+    An object meant to be defined in your project to represent the URL of various systems that you want to 
+    be able to link various object types to.
+    """
+
+    property base String = "http://service.company.com"
+    property link Function = ( id ) => base / id
+}
+
+link-builder jira {
+    base = "https://jira.company.com"
+}
+
+link-builder jama {
+    base = "https://jama.company.com"
+}
+
+link-builder defect-tracking-system is jira
+link-builder requirements-tracking-system is jama

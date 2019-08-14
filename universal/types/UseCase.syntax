@@ -1,0 +1,33 @@
+type UseCaseGranularity is Enum {
+    VeryHigh "The view from space - looking at the whole system, and why the user uses it"
+    High     "The view from an airplane - looking at one major feature of the system"
+    Medium   "The view from the tree tops - looking at one particular function"
+    Low      "The view on the ground - describing a specific user interaction"
+    VeryLow  "As an ant sees things - describing very fine-grained interactions from below the vantagepoint of a user"
+}
+
+type UseCase is Object {
+    """
+    Describes how a particular user of the system interacts with the system,
+    and how the system responds to that interaction.
+
+    Use cases are a tool for expressing business intent.  Creating them in our
+    SDLC DSL allows us to track features to use cases, test cases to use cases,
+    and aids in automated generation of test coverage.
+    """
+
+    property id      String = this.name
+    property summary String = this.value
+    property link    URL
+
+    property granularity UseCaseGranularity
+    property description String
+
+    property user         Actor
+    property others       list of Actor
+    property stakeholders list of Actor
+
+    property scenarios list of Scenario
+
+    // TODO: flesh this out a little more
+}

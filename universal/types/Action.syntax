@@ -1,0 +1,19 @@
+type Action is Object {
+    """
+    An object representing an action taken by an Actor on a Subject
+    """
+
+    property name  // object identifier
+    property value // assigned value, if any
+
+    // everything you might want to track about the action
+    property who   Actor
+    property what  String
+    property when  String
+    property where String
+    property why   String
+    property how   String
+
+    // a place to store the code to implement this action in a test script
+    property code Snippet
+}

@@ -1,4 +1,5 @@
 # testing-dsl-playground
+
 A place to experiment with what my testing DSL will look like
 
 ## Purpose
@@ -10,45 +11,50 @@ test cases and everything in between.
 Also, build a collection of tools to interpret that language, and 
 facilitate exploration and generation of artifacts and/or processes.
 
-The language will be concise and interpretable by both human and machine.
-It should capture the essence of the domain-specific details with
+The language will be concise and interpretable by both human and machine. 
+It is purely declarative - imperative logic is actively avoided.
+It is meant to capture the essence of the domain-specific details with
 precision and clarity, while being as self-explanatory as possible.
 
 The goals of this project are:
 
 * Facilitate communication between team members
-* * Business Users <-> The Development Team
-* * Domain Experts <-> Quality Assurance
-* * Developers <-> Quality Assurance
+  * Business Users <-> The Development Team
+  * Domain Experts <-> Quality Assurance
+  * Developers <-> Quality Assurance
 
-* Facilitate and accellerate automated generation of artifacts from 
-  specifications, like 
-* * Sequence Diagrams
-* * Entity Relationship Diagrams
-* * Classes / Interfaces
-* * Test Matrices
-* * Test Scripts
+* Provide living, value-adding, executable documentation
+  * Provide a model of the system
+    * The model is human readable - serves as documentation
+    * The model is computer readable
+      * Can execute constrained syntax BDD-style tests directly against the design
+      * Can enumerate all possible paths through the system (or a part of it)
+        * For requirements gap detection
+        * For design gap detection
+        * For design defect detection 
+        * For test matrix generation
+      * Can be transformed into other artifacts as needed
 
 * Track how everything relates
-* * These requirements are validated by these test cases
-* * These test cases apply under these conditions
-* * This feature is built on these components
-* * These components are fed from these other components
+  * These requirements are validated by these test cases
+  * These test cases apply under these conditions
+  * This feature is built on these components
+  * These components are fed from these other components
 
 ## Features
 
 * Describe everything in a clear and concise DSL
-* * Allows concepts to be communicated quickly, clearly, concisely, 
+  * Allows concepts to be communicated quickly, clearly, concisely, 
     regardless of their level of experience with the tool
-* * Allows the specifications to be checked into version control
-* * Allows collaboration on the construction of the specifications
-* * Allows code to be written to process the DSL and automatically 
+  * Allows the specifications to be checked into version control
+  * Allows collaboration on the construction of the specifications
+  * Allows code to be written to process the DSL and automatically 
     generate artifacts or more DSL
 
 * Language is declarative: 
-* * This is what it is
-* * This is what it does
-* * But not so much how it does it
+  * This is what it is
+  * This is what it does
+  * But not so much how it does it
 
 * IDEALY: Extensible - The core language provides syntax rules, and the 
   rest is constructed in that language
@@ -98,18 +104,19 @@ from the collective wisdom of those who contribute to that repository.
 The language is centered around building definitions of things, so that
 those definitions can be explored and reasoned about.  The language is
 primarily concerned with defining those things.  Therefore, the language
-is exclusively focused on constructing Objects is a clear and concise 
+is exclusively focused on constructing Objects in a clear and concise 
 way, that lets you re-use things whenever it makes sense to do so.
 
-* **Types** - Defines a local DSL for describing the words and syntax
+**Types** - Defines a local DSL for describing the words and syntax
   that can be used to construct a particular type of object
-* * The properties that can be set
-* * Limits on what kinds of values can be set in those properties
-* * Limits on what specific values can be set
-* * Flags for setting specific properties to specific values
 
-* **Objects** - A specific named instance of a particular type
-* * Objects have a type, which is used to aid the parsing
-* * Objects can inherit from other objects of the same type
-* * That means being initialized by cloning those other objects
-* * 
+* The properties that can be set
+* Limits on what kinds of values can be set in those properties
+* Limits on what specific values can be set
+* Flags for setting specific properties to specific values
+
+**Objects** - A specific named instance of a particular type
+
+* Objects have a type, which is used to aid the parsing
+* Objects can inherit from other objects of the same type
+* That means being initialized by cloning those other objects

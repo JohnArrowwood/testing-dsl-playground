@@ -49,6 +49,8 @@ You can add an annotation to an equivalence class to help guide the generation o
 | `negative` | Mark this as a negative or failure case value |
 | `upper-bounds` | Mark this as a special case of the upper bounds |
 | `lower-bounds` | Mark it as the lower bounds |
+| `malformed` | indicate that it is negative because the format is wrong |
+| `out-of-bounds` | flag
 
 ## Aliases
 
@@ -57,6 +59,7 @@ While `equivalence-class` should work in most cases, there may be situations whe
 * `equivalence-class` - the technical term that best describes what we are declaring
 * `possibility` - one possible value of many for a parameter - though all of those possibilities are still equivalence classes
 * `variant` - Jokes about the TVA aside, defines this as one variant of possible values.
+* `category`
 
 You create an alias like so:
 

@@ -1,6 +1,238 @@
 # Quick Reference
 
-## Block
+## At a Glance
+
+The language is composed of **statements**.  These statements can be divided into the following functional categories:
+
+* **definitions** - assigning a name to one or more statements (a block) for reusability and readability
+  * _named blocks_ - reusable logic blocks, like procedures
+  * _equivalence classes_ - individual values for variables
+  * _lists_ - a named collection of equivalence classes for use in declaring variables
+  * _variables_ - a name that represents one of several possible states of the system
+  * _constants_ - a variable that only has one value - used primarily for self-documenting purposes - TBD - **Do not add until we know we need it**
+  * _custom object types_ - defining validation rules for objects (named blocks) with a defined structure
+  * _custom objects_ - creating instances of _custom object types_
+  * _field definitions_ - the rule for how to validate a particular field in a custom object
+  * _field declarations_ - initialization of a specific field in a custom object
+* **commands** - keywords that have a well-defined internal meaning
+  * _return_ - return from a named block, presumably before reaching the end
+  * _exit_ - halt the flow at this point - do not return
+  * _reject_ - inform the test case enumeration algorithm that this is an invalid combination
+* **conditionals** - flow control
+  * _if-then-else_ - `if <condition> then <block> [ else <block> ]` - and variants
+  * _switch-case_ - `switch <variable> { case <operator> <value> : <block> . . . }`
+* **constraints** - which are like a shorthand for a conditional where the `then` block is `reject`
+* **invocation** - invoking a named block, like a procedure call
+* **assignment** - explicit state transitions - setting a variable to a value
+
+You can have **single-statement-blocks** and **multi-statement-blocks** - they are both blocks.  MOST of the language is about defining and referencing and navigating blocks.
+
+Conspicuously **missing** from this language is any kind of imperative construct.  This language lacks:
+
+* **mathematical operations** - no numerical calculations of any kind
+* **string manipulation** - you can't compose strings
+* **function parameters** - you can call a named block, but you can't pass parameters
+* **return values** - called blocks don't return values
+* **looping constructs** - you can't do any kind of looping, not even via recursion
+
+It also has some interesting but deliberate limitations:
+
+* every **variable** is an **enum** - it has a finite, pre-declared set of allowed values, each representing some set of real-world values that constitute an equivalence class.
+
+When the program runs, it doesn't perform any calculations, call any services, or move data around.  The only thing it does is explore all the different **paths** through your program, starting at your chosen starting point.  
+
+The reason for these limitations is because this is not a general-purpose programming language.  You don't use it to write _algorithms_, you use it to model your applications **business logic**.
+
+What do you do with this model?
+
+* **Document** your system requirements in structured BDD-style acceptance criteria
+* **Design** your business logic in a simplified but structured, executable way
+* Automatically **prove** if your **design meets the requirements**
+* Automatically prove if there are **gaps** in the requirements
+* Automatically **generate** the test cases needed to validate the implementation
+* **Accelerate** implementation by following the proven design
+* **Achieve quality** through efficient yet exhaustive test automation
+
+You could even use it to:
+
+* produce documentation artifacts
+* craft boilerplate implementation or test code
+* directly drive test execution
+
+This is the ultimate Shift-Left empowerment tool.  Get your software design out of your head.  Don't put it on paper where it just sits there.  Express it in a living, breathing, executable specification that lets you test it, refactor it, and use it to drive both speed and quality.
+
+## Definitions
+
+### Named Blocks
+
+A business process is a sequence of one or more steps.  A named block simply associates a name to that sequence.
+
+~~~plaintext
+define <name> is <action>;
+define <name> as <action>;
+define <name> = <action>;
+<name> is <action>;
+<name> as <action>;
+<name> = <action>;
+~~~
+
+or
+
+~~~plaintext
+define <name> is { <actions> }
+define <name> as { <actions> }
+define <name> = { <actions> }
+define <name> { <actions> }
+<name> is { <actions> }
+<name> = { <actions> }
+<name> { <actions> }
+~~~
+
+Note that the `as` keyword is optional when defining a multi-statement block.
+
+See also:
+
+* [Named Block](named-block.md)
+
+### Variables, Lists, and Equivalence Classes
+
+In this language, every variable is an enum, and every enum value represents an equivalence class, a subset of test inputs that are treated as **equivalent** because they are expected to produce the same behavior from the system under test.
+
+There is always more than one way to say it:
+
+~~~plaintext
+equivalence class <name>;
+equivalence class <name> is when "<description>";
+equivalence class <name> is when "<description>" { <settings> }
+equivalence class <name> { <settings> }
+<name> is when "<description>";
+<name> is when "<description>" { <settings> }
+~~~
+
+Once you have defined your individual equivalence classes, you have the option to define a list of semantically related class values, and give them a meaningful name.
+
+~~~plaintext
+list <name> includes [ <one>, <two>, <three> ];
+<name> includes [ <values> ];
+~~~
+
+The equivalence class list inside the declaration can either be inline definitions or references to pre-defined equivalence classes, so that classes can be re-used.
+
+You can define one list in terms other lists:
+
+~~~plaintext
+<name> includes <base-list>, <other-list> except {
+    exclude <value1>, <value2>;
+    include <value3>;
+}
+~~~
+
+When you define a variable, you may define your list inline using the `[ . . . ]` syntax, or reference a pre-defined list.  If you choose to define the list anonymously, you again have the option of defining your equivalence classes inline or referencing the names of pre-defined classes.
+
+~~~plaintext
+variable <name> is one of [ <values> ];
+variable <name> is one of [ <values> ] where { <constraints> }
+~~~
+
+or
+
+~~~plaintext
+variable <name> is one of LIST_NAME;
+variable <name> is one of LIST_NAME where { <constraints> }
+variable <name> is one of LIST_ONE, LIST_TWO except { <modifications> }
+variable <name> 
+    is one of LIST_ONE, LIST_TWO
+    except { <modifications> } 
+    where { <constraints> }
+~~~
+
+And for all of these, the keyword `variable` is optional.
+
+~~~plaintext
+<name> is one of [ <values> ];
+<name> is one of [ <values> ] where { constraints }
+<name> is one of LIST_NAME;
+<name> is one of LIST_NAME where { constraints }
+<name> is one of LIST_NAME except { <modifications> }
+<name> 
+    is one of LIST_NAME 
+    except { <modifications> } 
+    where { constraints }
+~~~
+
+#### Concrete Example
+
+~~~plaintext
+USER_INPUT includes [ PROVIDED, OMITTED, MALFORMED ];
+PROVIDED is when "the user provides a value" { positive }
+OMITTED is when "the user does not provide a value" { negative }
+MALFORMED is when "the user provides a value, but it's not usable" { negative }
+
+username is one of USER_INPUT;
+password is one of USER_INPUT;
+
+INPUT_VALIDATION includes [ MATCH, NO_MATCH ];
+MATCH is when "the user provides a value that matches one found in the database" { positive }
+NO_MATCH is when "the provided value is not found or does not match" { negative }
+
+"account exists" is one of [ TRUE, FALSE ] where {
+    // example constraints - syntax applies only to a variable where-clause
+    requires "username" to be PROVIDED;
+    is FALSE when username is MALFORMED;
+};
+
+"password match" is one of INPUT_VALIDATION where {
+    requires "username" to be PROVIDED;
+    is NO_MATCH when password is MALFORMED;
+};
+
+"user is password locked out" is one of [ TRUE, FALSE, NOT_APPLICABLE ] where {
+    requires "account exists" to be TRUE;
+};
+
+"account status" is one of [ 
+    ACTIVE, 
+    DISABLED { negative }, 
+    DELETED { negative }
+] where {
+    requires "account exists" to be TRUE;
+}
+
+kba is one of [
+    SET { positive },
+    NOT_SET { negative }
+] where {
+    requires "account exists" to be TRUE;
+}
+
+define Login Flow as {
+    user inputs username, password;
+    if username is OMITTED then { Mark field as required; exit }
+    if password is OMITTED then { Mark field as required; exit }
+    if account exists is FALSE or 
+       password match is NO_MATCH or 
+       user is password locked out is TRUE or
+       account status is not ACTIVE then 
+        Display Bad Credentials Message;
+    if kba is NOT_SET then
+        Prompt To Set Security Questions;
+}
+
+define "Display Bad Credentials Message" as {
+    Re-display the Login page;
+    Preserve the username;
+    Clear the password;
+    Display a message that says "Username or Password is invalid.";
+    exit;
+}
+
+See also:
+
+* [Equivalence Class](equivalence-class.md)
+* [List](list.md)
+* [Variable](variable.md)
+
+## Blocks
 
 There are single-statement blocks:
 
@@ -36,6 +268,16 @@ define SequenceName as {
 This allows you to make your design self-documenting.  Then any place where a block is needed, you can either inject the necessary statements directly, or reference the pre-defined block by name, subject to scoping rules.
 
 As with some languages (Perl, JavaScript), the trailing semicolon is optional for the last statement in a multi-statement block.
+
+## Defining Named Blocks
+
+## Primitive Commands
+
+### return
+
+### exit
+
+### reject
 
 ## Call
 
@@ -194,19 +436,6 @@ In English, there's always more than one way to say something.  Since this langu
 * `<statement> unless <condition>;` - evaluate statement only if condition is false
 
 NOTE: I may not support all of these, we shall see.
-
-## Equivalence Class
-
-Declare an equivalence class `name` and annotate it with flags that can help shape test case generation.
-
-~~~plaintext
-equivalence-class Valid { positive; default; }
-equivalence-class Invalid { negative; }
-equivalence-class Upper-Bounds { positive; upper-bounds; }
-equivalence-class Lower-Bounds { positive; lower-bounds; }
-~~~
-
-See [Equivalence Class](equivalence-class.md).
 
 ## Variable
 
